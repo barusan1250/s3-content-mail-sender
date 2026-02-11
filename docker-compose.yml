@@ -1,0 +1,37 @@
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - "9020:9000"
+      - "9021:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    command: server --console-address ":9001" /data
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    volumes:
+      - ./init:/init:ro
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+        exit 0;
+      "
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  minio_data:

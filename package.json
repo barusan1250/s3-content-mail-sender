@@ -1,0 +1,17 @@
+{
+    "name": "s3-content-mail-sender",
+    "version": "0.1.0",
+    "description": "S3からコンテンツを取得しSMTP経由でメール送信するLambda関数",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "invoke": "node handler.js"
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.700.0",
+        "nodemailer": "^6.9.0"
+    },
+    "devDependencies": {
+        "dotenv": "^16.4.0"
+    }
+}

@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: S3 Content Mail Sender - Sends email with S3 content via SMTP
+
+Parameters:
+  S3BucketName:
+    Type: String
+  S3TextKey:
+    Type: String
+  S3AudioKey:
+    Type: String
+    Default: ""
+  MailFromEmail:
+    Type: String
+  MailToEmails:
+    Type: String
+  MailSubject:
+    Type: String
+    Default: "S3 Content Mail"
+  SmtpHost:
+    Type: String
+  SmtpPort:
+    Type: String
+    Default: "587"
+  SmtpUser:
+    Type: String
+  SmtpPass:
+    Type: String
+  SmtpSecure:
+    Type: String
+    Default: "false"
+
+Resources:
+  MailSenderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: handler.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Timeout: 60
+      MemorySize: 256
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: !Ref S3BucketName
+          S3_TEXT_KEY: !Ref S3TextKey
+          S3_AUDIO_KEY: !Ref S3AudioKey
+          MAIL_FROM_EMAIL: !Ref MailFromEmail
+          MAIL_TO_EMAILS: !Ref MailToEmails
+          MAIL_SUBJECT: !Ref MailSubject
+          SMTP_HOST: !Ref SmtpHost
+          SMTP_PORT: !Ref SmtpPort
+          SMTP_USER: !Ref SmtpUser
+          SMTP_PASS: !Ref SmtpPass
+          SMTP_SECURE: !Ref SmtpSecure
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref S3BucketName
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  FunctionArn:
+    Description: "Mail Sender Lambda Function ARN"
+    Value: !GetAtt MailSenderFunction.Arn
