@@ -36,7 +36,7 @@ Resources:
     Properties:
       CodeUri: .
       Handler: handler.handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Architectures:
         - x86_64
       Timeout: 60
