@@ -21,7 +21,7 @@ docker compose up -d
 npm run invoke
 ```
 
-- MinIO Console: <http://localhost:9021> (minioadmin / minioadmin)
+- MinIO Console: <http://localhost:9021> (minio_user_8f3a2c / minio_pass_7b1d4e)
 - Mailpit WebUI: <http://localhost:8025> (送信メール確認用)
 
 ## 環境変数

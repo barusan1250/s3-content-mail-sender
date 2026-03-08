@@ -5,24 +5,11 @@ services:
       - "9020:9000"
       - "9021:9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: minio_user_8f3a2c
+      MINIO_ROOT_PASSWORD: minio_pass_7b1d4e
     volumes:
       - minio_data:/data
     command: server --console-address ":9001" /data
-
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    volumes:
-      - ./init:/init:ro
-    entrypoint: >
-      /bin/sh -c "
-        sleep 5;
-        /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-        exit 0;
-      "
 
   mailpit:
     image: axllent/mailpit
